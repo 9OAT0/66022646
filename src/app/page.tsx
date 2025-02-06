@@ -7,6 +7,15 @@ export default function home(){
     <div>
       66022646
     </div>
+    <div>
+      66022646
+    </div>
+    <div>
+      66022646
+    </div>
+    <div>
+      66022646
+    </div>
     </>
   )
 }
