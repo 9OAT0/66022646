@@ -1,8 +1,8 @@
 pipeline {
     agent any
     environment {
-        DOCKER_IMAGE = 'jenkins-app'
-        PORT = '<3584>' // เปลี่ยนเป็น port ที่คุณเลือก
+        DOCKER_IMAGE = 'jenkins-app' // ชื่อ Docker image
+        PORT = '3584' // Port ที่จะใช้ในการเข้าถึง
     }
     stages {
         stage('Checkout') {
@@ -27,14 +27,14 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    sh "docker build -t ${66022646} ."
+                    sh "docker build -t ${DOCKER_IMAGE} ."
                 }
             }
         }
         stage('Docker Run') {
             steps {
                 script {
-                    sh "docker run -d -p ${PORT}:3584 ${66022646}"
+                    sh "docker run -d -p ${PORT}:3000 ${DOCKER_IMAGE}"
                 }
             }
         }
