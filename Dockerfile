@@ -23,8 +23,8 @@ FROM node:18-alpine AS runner
 
 # ตั้งค่าตัวแปรสภาพแวดล้อม
 ENV NODE_ENV=production
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
+ENV PORT=3584
+ENV HOSTNAME="43.208.241.236"
 
 # ใช้ non-root user
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
@@ -41,7 +41,7 @@ COPY --from=base /app/.next/static ./.next/static
 USER appuser
 
 # เปิด port ที่แอปพลิเคชันจะฟัง
-EXPOSE 3000
+EXPOSE 3584
 
 # รันแอปพลิเคชัน
 CMD ["node", "server.js"]
