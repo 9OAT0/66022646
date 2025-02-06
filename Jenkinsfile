@@ -1,50 +1,25 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_IMAGE = 'jenkins-app' // ชื่อ Docker image
-        PORT = '3584' // Port ที่จะใช้ในการเข้าถึง
-    }
-    stages {
-        stage('Checkout') {
+    stages {      
+        stage("Copy files to Docker server") {
             steps {
-                git url: 'https://github.com/9OAT0/66022646.git', branch: 'main'
+                // แก้ตรง team33-neogym ให้เป็นชื่อเดียวกับ pipeline job/item ที่สร้างใน Jenkins
+                sh "scp -r /var/lib/jenkins/workspace/66022646/* root@43.208.241.236:~/66022646"
             }
         }
-        stage('Install Dependencies') {
+        
+        stage("Build Docker Image") {
             steps {
-                script {
-                    sh 'npm install'
-                }
-            }
-        }
-        stage('Build') {
+                // path การทำงานกับ Ansible playbook
+                ansiblePlaybook playbook: '/var/lib/jenkins/workspace/66022646/playbooks/build.yaml'
+            }    
+        } 
+        
+        stage("Create Docker Container") {
             steps {
-                script {
-                    sh 'npm run build'
-                }
-            }
-        }
-        stage('Docker Build') {
-            steps {
-                script {
-                    sh "docker build -t ${DOCKER_IMAGE} ."
-                }
-            }
-        }
-        stage('Docker Run') {
-            steps {
-                script {
-                    sh "docker run -d -p ${PORT}:3000 ${DOCKER_IMAGE}"
-                }
-            }
-        }
-    }
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed.'
-        }
+                // path การทำงานกับ Ansible playbook
+                ansiblePlaybook playbook: '/var/lib/jenkins/workspace/66022646/playbooks/deploy.yaml'
+            }    
+        } 
     }
 }
