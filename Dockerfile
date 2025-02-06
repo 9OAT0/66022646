@@ -16,7 +16,7 @@ RUN npm run build
 FROM node:18-alpine AS runner
 
 ENV NODE_ENV=production
-ENV PORT=3555
+ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
@@ -29,6 +29,6 @@ COPY --from=base /app/.next/static ./.next/static
 
 USER appuser
 
-EXPOSE 3555
+EXPOSE 3000
 
 CMD ["node", "server.js"]
